@@ -15,7 +15,7 @@ The server analyse the webpage and send the intel on meilleursagents.com .Depend
 
 ## Services used
 
-* [Dropwizard](https://nodejs.org/en/) - Node JS server
+* [Node JS](https://nodejs.org/en/) - Node JS server
 
 
 
