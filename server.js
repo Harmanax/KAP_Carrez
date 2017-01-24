@@ -1,23 +1,18 @@
-let http = require('http')
-let fs = require('fs')
+var express = require('express');
+var app = express();
 
-var server = http.createServer()
+app.use(express.static('app_carrez'));
 
-server.on('request', (request, response) =>{
-	
-	fs.readFile('test.html', (err,data) => {
-		
-		if(err) throw err
 
-		response.writeHead(200,{
-		'Content-type':'text/html; charset=utf-8'
-		})
+app.get('/', function (request, response) {
+	response.sendfile('./index.html');
+});
 
-		response.end(data)
-	})
+app.use(function (request, response, next){
+	response.sendfile('./app_carrez/404.html');
+});
 
-	
-})
 
-server.listen(8080)
-console.log("Serveur lancé")
+app.listen(8080, function () {   
+   console.log("Serveur lancé sur le port 8080");
+});
