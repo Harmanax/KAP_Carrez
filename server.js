@@ -1,22 +1,41 @@
 var express = require('express');
-var bodyParser = require("body-parser");
-var url = require("url");
-
-var url_lbc = "ad-lbc";
+var bodyParser = require('body-parser');
 var app = express();
+var url_test = 'https://www.leboncoin.fr/ventes_immobilieres/1089785228.htm?ca=12_s';
+var var_test = 'SALOPE';
 
+//Moteur de templates
+app.set('view engine', 'ejs');
 
-app.use(express.static('app_carrez'));
-app.use(bodyParser.urlencoded({ extended: true }));
+//---------------Middleware--------------
+app.use('/assets', express.static('public'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+app.use(require('./middlewares/ScrapLBC'))
 
-app.get('/', function (request, response) {
-	response.sendFile('./index.html');
+//----------ROUTAGE----------------------
+app.get('/', function(req, res) {
+    res.render('pages/index');
 });
 
-app.use(function (request, response, next){
-	response.sendFile('./app_carrez/404.html');
-});
+app.post('/', function(req, res){
 
-app.listen(8080, function () {   
-   console.log("Serveur lancé sur le port 8080");
+  if(req.body.LBC === undefined || req.body.LBC === ''){
+    res.render('pages/index', {message: "Veuillez entrer une url !"});
+  }
+
+
+  //########## APPEL DU SCRAP (un middleware) ############
+  req.getData(url_test);
+
+});
+//----------FIN DE ROUTAGE----------------
+
+//SI PAGE INTROUVABLE
+app.use(function(req, res, next){
+    res.render('pages/index', {message: "page introuvable"});
+});
+//PORT D'ECOUTE
+app.listen(8080, ()=>{
+  console.log("Serveur lancé sur le port 8080");
 });

@@ -1,10 +1,13 @@
 {
-  "name": "Express-web-app",
-  "version": "1.0.0",
-  "dependencies":
-  {
-    "express": "~4.0.0",
-    "mysql": "*",
-    "ejs": "~1.0.0"
+  "name"         : "KAP_Carrez",
+  "version"      : "1.0",
+  "description"  : "Analyse de bails immobiliers",
+  "main"         : "server.js",
+  "author"       : "Paul Puech - Ken Moussat - Auriane De Coligny",
+  "dependencies" : {
+    "express"    : "latest",
+    "request"    : "latest",
+    "body-parser": "latest", 
+    "cheerio"    : "latest"
   }
 }

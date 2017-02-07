@@ -12,15 +12,15 @@
     <title>KAP - Carrez</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/stylish-portfolio.css" rel="stylesheet">
+    <link href="assets/css/stylish-portfolio.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-<link href="css/form.css" rel="stylesheet">
+<link href="assets/css/form.css" rel="stylesheet">
 
 </head>
 
@@ -31,32 +31,37 @@
     <!-- Header -->
     <header id="top" class="header">
         <div class="text-vertical-center">
-            <h1>Welcom to KAP carrez!</h1>
+            <h1>Welcome to KAP carrez!</h1>
             <h3>We evaluate &amp; determine the best deal for you!</h3>
             <br>
-           
-	<form method="POST">
+
+	<form action="/" method="POST">
         <ul class="form-style-5">
         <div>
             <label><h3><label for="ad-lbc"><font color="#06717c">Evaluate the Real Estate </font></label></span><label>
             <br />
-            <input class="ad-lbc" id="ad-lbc" name="ad-lbc" type="text" placeholder="ex: https://www.leboncoin.fr/ventes_immobilieres/1076257949.htm?ca=12_s" required/>
+            <input name="LBC" type="text" placeholder="ex: https://www.leboncoin.fr/ventes_immobilieres/1076257949.htm?ca=12_s" required/>
             <br />
+            <% if(locals.message){ %>
+            <div class="message">
+              <%= message %>
+            </div>
+            <% } %>
         </div>
-	
-        <input type="submit" id="submit" value="Submit" /></h3>
-   
+
+        <input type="submit" value="Submit" /></h3>
+
 	   </ul>
     </form>
-						
+
         </div>
-		
-		 
+
+
     </header>
 
-    
 
-    
+
+
 
 </body>
 
