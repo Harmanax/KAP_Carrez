@@ -3,7 +3,8 @@ module.exports = function(req, res, next){
   //Under middlewares et variables locales pour tests
   var request = require('request');
   var cheerio = require('cheerio');
-  var test_MA = 'https://www.meilleursagents.com/prix-immobilier/selens-02300/';
+  var baseMA = 'https://www.meilleursagents.com/prix-immobilier/selens-02300/';
+  var baseMA = 'https://www.meilleursagents.com/prix-immobilier/';
 
   var data = {
     prix: 0,
@@ -22,16 +23,38 @@ module.exports = function(req, res, next){
         var $ = cheerio.load(body);
         $('properties', 'properties')
 
-        //---variables obtenues ----
-        console.log('Informations sur url :');
-        console.log(data.prix);
-        console.log(data.surface);
-        console.log(data.adresse);
-        //---------------------------
+		      var price = $( 'h2.item_price.clearfix span.value ' ).text().trim().split( ' ' );
+          data.prix = price[0] + price[1];
+		      data.prix = data.prix.slice(' ', - 2);
+
+          //BUgguée ! ne sors pas toujours le bon span
+		      var area = $( $( 'h2.clearfix span.value' ).get( 2 ) ).text();
+		      data.surface = area.slice(' ', - 3);
+
+		      var address = $( $( 'h2.clearfix span.value' ).get( 1 ) ).text();
+		      data.adresse = address;
+          data.adresse = data.adresse.toLowerCase();
+          data.adresse = data.adresse.replace(" ","-");
+          data.prixSurfaceHabitable = data.prix / data.surface;
+
+
+
+          //---variables obtenues ----
+          console.log('Informations sur url :');
+		      console.log(url);
+          console.log(data.prix);
+          console.log(data.surface);
+          console.log(data.adresse);
+		      console.log(data.prixSurfaceHabitable);
+          //---------------------------
+
+
       }
 
       //FIN DU SCRAP
     });
+
+    res.locals.data = data;
   }
 
 

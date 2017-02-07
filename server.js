@@ -2,8 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var url_test = 'https://www.leboncoin.fr/ventes_immobilieres/1089785228.htm?ca=12_s';
-var var_test = 'SALOPE';
-
+var test_MA = 'https://www.meilleursagents.com/prix-immobilier/selens-02300/';
+var data = {
+  prix: 0,
+  surface: 0,
+  adresse: "",
+  prixSurfaceHabitable: 0,
+}
 //Moteur de templates
 app.set('view engine', 'ejs');
 
@@ -27,6 +32,8 @@ app.post('/', function(req, res){
 
   //########## APPEL DU SCRAP (un middleware) ############
   req.getData(url_test);
+  console.log('retour server');
+  console.log(res.locals.data.prix);
 
 });
 //----------FIN DE ROUTAGE----------------
@@ -44,5 +51,5 @@ app.listen(8080, ()=>{
 
 //Ligne 520 LBC
 //Ligne 521 Argent (content)
-//Ligne 546 address 
+//Ligne 546 address
 //Ligne 592 Metre carre
