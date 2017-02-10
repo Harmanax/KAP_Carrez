@@ -70,17 +70,35 @@ module.exports = function(req, res, next){
             if(!err && resp.statusCode === 200){
               var $ = cheerio.load(body);
 
-              var medPrice = $('small-4 medium-2 columns prices-summary__cell--median')
+              //#
+              //# SCRAP MEILLER AGENT
+              var medPrice = $('div.small-4.medium-2.columns.prices-summary__cell--median')
               console.log('prix moyen : ');
               console.log(medPrice);
+              //#
+              //#
+              //fin de traitement ok
+              var isOK = false;
+              if(data.prix <= medPrice){
+                isOK = true;
+              }
+              res.render('../views/pages/results', {
+                adress: data.adresse,
+                prix: data.prix,
+                prixMoy: medPrice,
+                test: isOK
+              });
             }
             else{
+              //fin de traitement PAS OK
               console.log('fail');
             }
 
             //FIN DU SCRAP
           });
-          res.end('ok');
+
+          // renvoi final
+
 
       }
 
