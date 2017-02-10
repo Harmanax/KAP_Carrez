@@ -36,19 +36,21 @@
             <br>
 
 
-            <div> <label><h3><label for="ad-lbc"><font color="#06717c">Result of your research : The Real Estate </font></label></span><label>
+            <div> <label><h3><label for="ad-lbc"><font color="#06717c">Result of your research : </font></label></span><label>
             <br/>
 
-            <div id="results"></div>
+            <div id="results">
 
             <% if(locals.adress){ %>
             <div class="adress">
               <p>Adresse inspectée :</p><br>
               <span><%=  adress %></span>
+              <p>m² (leboncoin) :</p><br>
+              <span><%= surface %></span>
               <p>Prix de l'annonce :</p><br>
               <span><%= prix %></span>
-              <p>Prix moyen dans cette zone :</p><br>
-              <span><%= prixMoy %></span>
+              <p>Prix conseillé :</p><br>
+              <span><%= prixSurfaceHabitable %></span>
             </div>
 
             <div class="result">
@@ -64,7 +66,11 @@
             </div>
 
 
+            <% } else{%>
+              <br><h2> <%= message %> </h2>
             <% } %>
+
+            </div>
 
             <form action="./" method="POST">
             <input type="submit" id="submit" value="Homepage"/></h3>

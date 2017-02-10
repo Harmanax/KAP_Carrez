@@ -3,7 +3,6 @@ module.exports = function(req, res, next){
   //Under middlewares et variables locales pour tests
   var request = require('request');
   var cheerio = require('cheerio');
-  var baseMA = 'https://www.meilleursagents.com/prix-immobilier/selens-02300/';
   var data = {
     prix: 0,
     surface: 0,
@@ -45,9 +44,10 @@ module.exports = function(req, res, next){
 
 		      var address = $( $( 'h2.clearfix span.value' ).get( 1 ) ).text();
 		      data.adresse = address;
+          data.adresse = data.adresse.replace("\n","");
           data.adresse = data.adresse.toLowerCase();
           data.adresse = data.adresse.replace(" ","-");
-          data.prixSurfaceHabitable = data.prix / data.surface;
+          data.adresse.trim();
 
 
 
@@ -62,36 +62,53 @@ module.exports = function(req, res, next){
 
           //ScrapMA
 
-          var newURL = 'https://www.meilleursagents.com/prix-immobilier/'+data.adresse+'/';
+          var newURL = 'https://www.meilleursagents.com/prix-immobilier/'+data.adresse;
           console.log(newURL);
 
-          request(url, function(err, resp, body){
+          request(newURL, function(err, resp, body){
             // DEBUT DU SCRAP
             if(!err && resp.statusCode === 200){
               var $ = cheerio.load(body);
 
               //#
               //# SCRAP MEILLER AGENT
-              var medPrice = $('div.small-4.medium-2.columns.prices-summary__cell--median')
+              /*
+              var medPrice = $('div.small-4.medium-2.columns.prices-summary__cell--median').text().trim().split( ' ' );
+              medPrice = medPrice[0] + medPrice[1];
+              medPrice = medPrice.slice(' ', -1);
+              medPrice = medPrice.replace(/&nbsp;/,"");
+              */
+              var medPrice = $('div.small-4.medium-2.columns.prices-summary__cell--median').text();
+              medPrice = medPrice.replace( /[^\d.]/g,'');
+              medPrice = medPrice.replace("\n","");
+              medPrice = medPrice.trim();
+
               console.log('prix moyen : ');
               console.log(medPrice);
               //#
               //#
               //fin de traitement ok
               var isOK = false;
-              if(data.prix <= medPrice){
+              data.prixSurfaceHabitable = medPrice*data.surface;
+              console.log('prix conseillé :');
+              console.log(data.prixSurfaceHabitable);
+              if(data.prix <= data.prixSurfaceHabitable){
                 isOK = true;
               }
               res.render('../views/pages/results', {
                 adress: data.adresse,
                 prix: data.prix,
+                surface: data.surface,
                 prixMoy: medPrice,
+                prixSurfaceHabitable: data.prixSurfaceHabitable,
                 test: isOK
               });
             }
             else{
-              //fin de traitement PAS OK
-              console.log('fail');
+              res.render('../views/pages/results', {
+                adress: false,
+                message : 'Erreur URL, echec analyse'
+              });
             }
 
             //FIN DU SCRAP
@@ -101,6 +118,11 @@ module.exports = function(req, res, next){
 
 
       }
+      else {
+          res.render('../views/pages/index',{ message: 'Adresse invalide'});
+      }
+      //cas où mauvais adresse entrée
+
 
       //FIN DU SCRAP
     });
