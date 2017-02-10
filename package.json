@@ -1,6 +1,6 @@
 {
   "name"         : "KAP_Carrez",
-  "version"      : "1.0",
+  "version"      : "1.0.0",
   "description"  : "Analyse de bails immobiliers",
   "main"         : "server.js",
   "author"       : "Paul Puech - Ken Moussat - Auriane De Coligny",
