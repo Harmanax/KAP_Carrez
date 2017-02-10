@@ -4,8 +4,6 @@ module.exports = function(req, res, next){
   var request = require('request');
   var cheerio = require('cheerio');
   var baseMA = 'https://www.meilleursagents.com/prix-immobilier/selens-02300/';
-  var baseMA = 'https://www.meilleursagents.com/prix-immobilier/';
-
   var data = {
     prix: 0,
     surface: 0,
@@ -27,9 +25,23 @@ module.exports = function(req, res, next){
           data.prix = price[0] + price[1];
 		      data.prix = data.prix.slice(' ', - 2);
 
-          //BUgguée ! ne sors pas toujours le bon span
-		      var area = $( $( 'h2.clearfix span.value' ).get( 2 ) ).text();
-		      data.surface = area.slice(' ', - 3);
+
+          var area = $( $( 'h2.clearfix span.value' ).get( 2 ) ).text();
+  		      data.surface = area.slice(' ', - 3);
+
+  			  var check = $( $( 'h2.clearfix span.value' ).get( 3 ) ).text();
+
+
+  			  if (typeof data.surface === 'string' || data.surface instanceof String )
+  			  {
+  				 var area = $( $( 'h2.clearfix span.value' ).get( 4 ) ).text();
+  		      data.surface = area.slice(' ', - 3);
+  			  }
+  			  else if ((typeof data.surface === 'string' || data.surface instanceof String) && (typeof check === 'string' || check instanceof String) )
+  			  {
+  				  var area = $( $( 'h2.clearfix span.value' ).get( 5 ) ).text();
+  		      data.surface = area.slice(' ', - 3);
+  			  }
 
 		      var address = $( $( 'h2.clearfix span.value' ).get( 1 ) ).text();
 		      data.adresse = address;
@@ -48,13 +60,32 @@ module.exports = function(req, res, next){
 		      console.log(data.prixSurfaceHabitable);
           //---------------------------
 
+          //ScrapMA
+
+          var newURL = 'https://www.meilleursagents.com/prix-immobilier/'+data.adresse+'/';
+          console.log(newURL);
+
+          request(url, function(err, resp, body){
+            // DEBUT DU SCRAP
+            if(!err && resp.statusCode === 200){
+              var $ = cheerio.load(body);
+
+              var medPrice = $('small-4 medium-2 columns prices-summary__cell--median')
+              console.log('prix moyen : ');
+              console.log(medPrice);
+            }
+            else{
+              console.log('fail');
+            }
+
+            //FIN DU SCRAP
+          });
+          res.end('ok');
 
       }
 
       //FIN DU SCRAP
     });
-
-    res.locals.data = data;
   }
 
 

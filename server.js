@@ -31,9 +31,8 @@ app.post('/', function(req, res){
 
 
   //########## APPEL DU SCRAP (un middleware) ############
-  req.getData(url_test);
-  console.log('retour server');
-  console.log(res.locals.data.prix);
+  console.log('envoi dans LBC');
+  req.getData(req.body.LBC);
 
 });
 //----------FIN DE ROUTAGE----------------
