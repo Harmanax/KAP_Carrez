@@ -5,10 +5,10 @@
   "main"         : "server.js",
   "author"       : "Paul Puech - Ken Moussat - Auriane De Coligny",
   "dependencies" : {
-    "express"    : "latest",
-    "request"    : "latest",
-    "body-parser": "latest",
-    "cheerio"    : "latest",
-    "ejs"        : "latest"
+    "express"    : "",
+    "request"    : "*",
+    "body-parser": "*",
+    "cheerio"    : "*",
+    "ejs"        : "*"
   }
 }
